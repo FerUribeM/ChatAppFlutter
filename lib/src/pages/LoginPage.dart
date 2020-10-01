@@ -1,8 +1,11 @@
+import 'package:chat_app/src/helpers/utils_alerts.dart';
+import 'package:chat_app/src/services/AuthService.dart';
 import 'package:chat_app/src/widgets/BtnBlue.dart';
 import 'package:chat_app/src/widgets/CustomTextField.dart';
 import 'package:chat_app/src/widgets/Labels.dart';
 import 'package:chat_app/src/widgets/Logo.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatelessWidget {
   @override
@@ -50,6 +53,8 @@ class __FormState extends State<_Form> {
 
   @override
   Widget build(BuildContext context) {
+    final authService = Provider.of<AuthServices>(context);
+
     return Container(
       margin: EdgeInsets.only(top: 40),
       padding: EdgeInsets.symmetric(horizontal: 50),
@@ -75,7 +80,18 @@ class __FormState extends State<_Form> {
           ),
           BtnBlue(
             text: 'Ingresar',
-            onPress: () {},
+            onPress: !authService.progressLogin ? () async {
+
+              FocusScope.of(context).unfocus();
+
+              final loginResult = await authService.login(userCtrl.text.trim(), passCtrl.text.trim());
+
+              if(loginResult){
+
+              }else{
+                showAlert(context, "Login incorrecto", "Usuario o contraseña incorrecta");
+              }
+            } : null,
           )
         ],
       ),
