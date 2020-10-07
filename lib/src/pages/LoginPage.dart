@@ -15,24 +15,22 @@ class LoginPage extends StatelessWidget {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
-            child: Expanded(
-              child: Container(
-                height: MediaQuery.of(context).size.height * 0.9,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Logo(title: 'Messenger',),
-                    _Form(),
-                    Labels(route: 'register',title: '¿No tienes cuenta?',message: 'Crea una ahora!'),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 20),
-                      child: Text(
-                        'Terminos y condiciones de uso',
-                        style: TextStyle(fontWeight: FontWeight.w300),
-                      ),
+            child: Container(
+              height: MediaQuery.of(context).size.height * 0.9,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Logo(title: 'Messenger',),
+                  _Form(),
+                  Labels(route: 'register',title: '¿No tienes cuenta?',message: 'Crea una ahora!'),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 20),
+                    child: Text(
+                      'Terminos y condiciones de uso',
+                      style: TextStyle(fontWeight: FontWeight.w300),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -87,9 +85,11 @@ class __FormState extends State<_Form> {
               final loginResult = await authService.login(userCtrl.text.trim(), passCtrl.text.trim());
 
               if(loginResult){
-
+                authService.progressLogin = false;
+                Navigator.pushReplacementNamed(context, 'users');
               }else{
                 showAlert(context, "Login incorrecto", "Usuario o contraseña incorrecta");
+                authService.progressLogin = false;
               }
             } : null,
           )
